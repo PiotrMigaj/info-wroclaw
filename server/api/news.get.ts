@@ -15,7 +15,7 @@ const getCachedNews = defineCachedFunction(
     name: 'wroclaw-news',
     maxAge: TTL,
     getKey: () => 'wroclaw-news',
-    swr: false, // hard 6-hour lock — no stale serving, no background revalidation
+    swr: true, // serve stale data immediately, revalidate in background
   },
 )
 

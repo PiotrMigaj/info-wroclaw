@@ -1,7 +1,7 @@
 import { ChatOpenAI } from '@langchain/openai'
 import { StateGraph, Annotation, END, START } from '@langchain/langgraph'
 import { tavily } from '@tavily/core'
-import type { Article, NewsItem } from './types'
+import type { Article, NewsItem } from '../../shared/types'
 import { extractListingPages } from './nodes/extractListingPages'
 import { fetchArticleContent } from './nodes/fetchArticleContent'
 import { summarizeArticle } from './nodes/summarizeArticle'
