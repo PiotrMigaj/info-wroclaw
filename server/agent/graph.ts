@@ -25,7 +25,7 @@ export async function runAgentGraph(
   openaiApiKey: string,
   tavilyApiKey: string,
 ): Promise<NewsItem[]> {
-  const llm = new ChatOpenAI({ model: 'gpt-4o', apiKey: openaiApiKey, temperature: 0.2 })
+  const llm = new ChatOpenAI({ model: 'gpt-4o-mini', apiKey: openaiApiKey, temperature: 0.2 })
   const tavilyClient = tavily({ apiKey: tavilyApiKey })
 
   const graph = new StateGraph(GraphState)
