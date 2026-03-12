@@ -1,5 +1,5 @@
 import type { ChatOpenAI } from '@langchain/openai'
-import type { Article, NewsItem } from '../types'
+import type { Article, NewsItem } from '../../../shared/types'
 
 export async function summarizeArticle(llm: ChatOpenAI, article: Article): Promise<NewsItem> {
   const response = await llm.invoke(

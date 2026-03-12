@@ -1,9 +1,9 @@
 import { runAgentGraph } from '../agent/graph'
-import type { NewsItem } from '../agent/types'
+import type { NewsItem } from '../../shared/types'
 
 export type { NewsItem }
 
-const TTL = 6 * 60 * 60 * 0.0001 // 6 hours in seconds
+const TTL = 6 * 60 * 60 // 6 hours in seconds
 
 const getCachedNews = defineCachedFunction(
   async () => {

@@ -155,6 +155,29 @@
       </ClientOnly>
     </main>
 
+    <!-- Photographer promo -->
+    <section class="max-w-5xl mx-auto px-4 pb-6">
+      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 px-6 py-5 flex items-center gap-5">
+        <div class="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-950 flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-medium uppercase tracking-wide text-gray-400 dark:text-gray-500">Twórca projektu</p>
+          <p class="text-sm font-semibold text-gray-900 dark:text-white mt-0.5">Anna Migaj — Fotograf</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">Sesje portretowe, ślubne i biznesowe. Architektura i estetyka w każdym kadrze.</p>
+        </div>
+        <a
+          href="https://niebieskie-aparaty.pl/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex-shrink-0 text-xs font-medium text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-1.5 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors"
+        >niebieskie-aparaty.pl →</a>
+      </div>
+    </section>
+
     <!-- Footer -->
     <footer class="text-center py-8 text-xs text-gray-400 dark:text-gray-600">
       Zasilane przez GPT-4o &amp; LangGraph &middot; Wiadomości odświeżane co 6 godzin
@@ -163,12 +186,48 @@
 </template>
 
 <script setup lang="ts">
-import type { NewsItem } from '~/server/api/news.get'
+import type { NewsItem } from '~~/shared/types'
+
+
+
+const title = 'Info Wrocław – Wiadomości z Wrocławia'
+const description = 'Najnowsze wiadomości z Wrocławia podsumowane przez agentów AI. Polityka, kultura, sport, infrastruktura i więcej – odświeżane co 6 godzin.'
+const canonicalUrl = useRequestURL().origin
 
 useHead({
-  title: 'Info Wrocław – Wiadomości z Wrocławia',
+  title,
   htmlAttrs: { lang: 'pl' },
-  meta: [{ name: 'description', content: 'Najnowsze wiadomości z Wrocławia podsumowane przez agentów AI.' }],
+  meta: [
+    { name: 'description', content: description },
+    { name: 'robots', content: 'index, follow' },
+    // Open Graph
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: canonicalUrl },
+    { property: 'og:title', content: title },
+    { property: 'og:description', content: description },
+    { property: 'og:locale', content: 'pl_PL' },
+    { property: 'og:site_name', content: 'Info Wrocław' },
+    // Twitter Card
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:description', content: description },
+  ],
+  link: [
+    { rel: 'canonical', href: canonicalUrl },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: 'Info Wrocław',
+        description,
+        url: canonicalUrl,
+        inLanguage: 'pl',
+      }),
+    },
+  ],
 })
 
 const { data, status, error } = useLazyFetch('/api/news', { server: false })
@@ -207,6 +266,6 @@ const categoryColors: Record<string, string> = {
 }
 
 function categoryColor(cat: string): string {
-  return categoryColors[cat] ?? categoryColors['Inne']
+  return categoryColors[cat] ?? categoryColors['Inne']!
 }
 </script>

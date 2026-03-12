@@ -1,5 +1,5 @@
 import type { tavily } from '@tavily/core'
-import type { Article, TavilyExtractResponse } from '../types'
+import type { Article, TavilyExtractResponse } from '../../../shared/types'
 
 export async function fetchArticleContent(
   tavilyClient: ReturnType<typeof tavily>,
