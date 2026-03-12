@@ -14,6 +14,7 @@
     "@langchain/core": "^1.1.32",
     "@langchain/langgraph": "^1.2.2",
     "@langchain/openai": "^1.2.13",
+    "@netlify/blobs": "^10.7.1",
     "@nuxt/eslint": "^1.15.2",
     "@nuxt/image": "^2.0.0",
     "@nuxt/ui": "^4.5.1",
