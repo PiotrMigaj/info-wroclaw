@@ -14,4 +14,7 @@ export default defineNuxtConfig({
     openaiApiKey: process.env.OPENAI_API_KEY,
     tavilyApiKey: process.env.TAVILY_API_KEY,
   },
+  nitro: {
+    preset: 'netlify',
+  },
 })
