@@ -22,11 +22,16 @@ Three-stage LangGraph workflow defined in `server/agent/graph.ts`:
 2. **Fetch content** — retrieves full article content for each URL
 3. **Summarize** — condenses articles into structured summaries using GPT-4o
 
+The LLM extracts `publishedAt` from article content (ISO 8601); falls back to `new Date()` if absent.
+Articles are sorted newest-first by `publishedAt` in `news.get.ts` before being cached/returned.
+
 News source URLs are defined in `server/agent/constants.ts`. Each stage is implemented as a separate node in `server/agent/nodes/`.
 
 ### API & caching (`server/api/news.get.ts`)
 
-Single API route `/api/news` that runs the agent pipeline. Results are cached server-side for 6 hours using Nuxt's `defineCachedFunction`.
+Single API route `/api/news` that runs the agent pipeline. Results are cached server-side for 6 hours using Nuxt's `defineCachedFunction` with `swr: true` — stale data is served immediately while revalidation runs in the background.
+
+Cache is persisted to **Netlify Blobs** (via `nitro.storage.cache` in `nuxt.config.ts`) so it survives cold starts. Requires `@netlify/blobs` package.
 
 ### Frontend (`app/pages/index.vue`)
 

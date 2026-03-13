@@ -1,5 +1,6 @@
 import { runAgentGraph } from '../agent/graph'
 import type { NewsItem } from '../../shared/types'
+import { incrementAgentRunCounter, getAgentRunCounter } from '../util/counter'
 
 export type { NewsItem }
 
@@ -9,6 +10,16 @@ const getCachedNews = defineCachedFunction(
   async () => {
     const config = useRuntimeConfig()
     const news = await runAgentGraph(config.openaiApiKey, config.tavilyApiKey)
+    news.sort((a, b) => {
+
+      const da = a.publishedAt ? new Date(a.publishedAt).getTime() : NaN
+      const db = b.publishedAt ? new Date(b.publishedAt).getTime() : NaN
+      if (isNaN(da) && isNaN(db)) return 0
+      if (isNaN(da)) return 1
+      if (isNaN(db)) return -1
+      return db - da
+    })
+    await incrementAgentRunCounter()
     return { news, generatedAt: Date.now() }
   },
   {
@@ -29,9 +40,11 @@ export default defineEventHandler(async () => {
   }
 
   const { news, generatedAt } = await getCachedNews()
+  const agentRunCount = await getAgentRunCounter()
   return {
     news,
     cachedAt: generatedAt + TTL * 1000,
     fromCache: Date.now() - generatedAt > 1000, // fresh if generated less than 1s ago
+    agentRunCount,
   }
 })

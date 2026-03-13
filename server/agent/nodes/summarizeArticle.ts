@@ -14,13 +14,15 @@ Zadania:
 2. Podaj TYTUŁ artykułu po polsku.
 3. Przypisz JEDNĄ kategorię: Polityka, Sport, Kultura, Infrastruktura, Biznes, Wydarzenia, Bezpieczeństwo, Inne.
 4. Jeśli w treści jest bezpośredni link do obrazka (jpg/png/webp/jpeg), podaj go – w przeciwnym razie null.
+5. Znajdź datę i godzinę publikacji artykułu w treści. Podaj ją w formacie ISO 8601 (np. "2026-03-12T14:30:00Z"). Jeśli nie możesz ustalić daty, podaj null.
 
 Odpowiedz TYLKO JSON:
 {
   "title": "tytuł",
   "summary": "streszczenie",
   "category": "kategoria",
-  "imageUrl": "url lub null"
+  "imageUrl": "url lub null",
+  "publishedAt": "ISO 8601 lub null"
 }`,
   )
 
@@ -35,8 +37,8 @@ Odpowiedz TYLKO JSON:
       summary: parsed.summary || 'Streszczenie niedostępne.',
       source: new URL(article.url).hostname,
       url: article.url,
-      imageUrl: parsed.imageUrl || null,
-      publishedAt: new Date().toISOString(),
+      imageUrl: (parsed.imageUrl && parsed.imageUrl !== 'null') ? parsed.imageUrl : null,
+      publishedAt: parsed.publishedAt || new Date().toISOString(),
       category: parsed.category || 'Inne',
     }
   } catch {

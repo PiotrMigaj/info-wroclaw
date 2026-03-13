@@ -125,6 +125,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                   </svg>
                   <span class="truncate">{{ item.source }}</span>
+                  <span v-if="item.publishedAt" class="flex-shrink-0">&middot; {{ formatDate(item.publishedAt) }}</span>
                 </div>
                 <a
                   :href="item.url"
@@ -181,6 +182,9 @@
     <!-- Footer -->
     <footer class="text-center py-8 text-xs text-gray-400 dark:text-gray-600">
       Zasilane przez GPT-4o &amp; LangGraph &middot; Wiadomości odświeżane co 6 godzin
+      <p v-if="data?.agentRunCount" class="mt-1">
+        Tyle razy pobrano informacje przez agenta: <span class="font-semibold">{{ data.agentRunCount }}</span>
+      </p>
     </footer>
   </div>
 </template>
@@ -267,5 +271,23 @@ const categoryColors: Record<string, string> = {
 
 function categoryColor(cat: string): string {
   return categoryColors[cat] ?? categoryColors['Inne']!
+}
+
+const MONTHS = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru']
+
+function formatDate(iso: string): string {
+  const date = new Date(iso)
+  if (isNaN(date.getTime())) return ''
+  const now = Date.now()
+  const diff = now - date.getTime()
+  if (diff < 3600000) {
+    const mins = Math.max(1, Math.floor(diff / 60000))
+    return `${mins} min. temu`
+  }
+  if (diff < 86400000) {
+    const hours = Math.floor(diff / 3600000)
+    return `${hours} godz. temu`
+  }
+  return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`
 }
 </script>
