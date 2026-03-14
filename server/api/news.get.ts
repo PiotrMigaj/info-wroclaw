@@ -30,7 +30,7 @@ const getCachedNews = defineCachedFunction(
   },
 )
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   if (!config.openaiApiKey || !config.tavilyApiKey) {
     throw createError({
@@ -41,6 +41,12 @@ export default defineEventHandler(async () => {
 
   const { news, generatedAt } = await getCachedNews()
   const agentRunCount = await getAgentRunCounter()
+
+  // Netlify CDN-level caching (works in production where Nitro's maxAge is ignored)
+  setHeader(event, 'Netlify-CDN-Cache-Control', 'public, durable, s-maxage=21600, stale-while-revalidate=3600')
+  setHeader(event, 'Cache-Control', 'public, max-age=0, must-revalidate')
+  setHeader(event, 'Netlify-Cache-Tag', 'news')
+
   return {
     news,
     cachedAt: generatedAt + TTL * 1000,

@@ -16,6 +16,9 @@ export default defineNuxtConfig({
   },
   nitro: {
     preset: 'netlify',
+    future: {
+      nativeSWR: true,
+    },
     storage: {
       cache: {
         driver: 'netlifyBlobs',
