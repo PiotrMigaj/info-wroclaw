@@ -19,11 +19,5 @@ export default defineNuxtConfig({
     future: {
       nativeSWR: true,
     },
-    storage: {
-      cache: {
-        driver: 'netlifyBlobs',
-        name: 'cache',
-      },
-    },
   },
 })
