@@ -13,6 +13,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     openaiApiKey: '',
     tavilyApiKey: '',
+    awsRegion: '',
+    awsAccessKeyId: '',
+    awsSecretAccessKey: '',
   },
   nitro: {
     preset: 'netlify',
