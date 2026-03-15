@@ -19,8 +19,8 @@ export default defineNuxtConfig({
   },
   nitro: {
     preset: 'netlify',
-    future: {
-      nativeSWR: true,
-    },
+    // future: {
+    //   nativeSWR: true,
+    // },
   },
 })
